@@ -1,4 +1,4 @@
-package org.anotheria.moskito.controlagent;
+package org.moskito.controlagent;
 
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;

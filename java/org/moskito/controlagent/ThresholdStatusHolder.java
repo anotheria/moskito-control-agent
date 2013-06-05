@@ -1,4 +1,4 @@
-package org.anotheria.moskito.controlagent;
+package org.moskito.controlagent;
 
 import net.anotheria.moskito.core.threshold.ThresholdStatus;
 
