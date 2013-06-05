@@ -1,4 +1,4 @@
-package org.anotheria.moskito.controlagent;
+package org.moskito.controlagent;
 
 public class Agent{
 

@@ -1,8 +1,8 @@
-package org.anotheria.moskito.controlagent.endpoints.http;
+package org.moskito.controlagent.endpoints.http;
 
-import org.anotheria.moskito.controlagent.Agent;
-import org.anotheria.moskito.controlagent.ThresholdStatusHolder;
-import org.anotheria.moskito.controlagent.endpoints.EndpointUtility;
+import org.moskito.controlagent.Agent;
+import org.moskito.controlagent.ThresholdStatusHolder;
+import org.moskito.controlagent.endpoints.EndpointUtility;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
