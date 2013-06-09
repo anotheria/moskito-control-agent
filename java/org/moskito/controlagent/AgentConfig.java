@@ -2,6 +2,7 @@ package org.moskito.controlagent;
 
 import net.anotheria.util.StringUtils;
 import org.apache.log4j.Logger;
+import org.configureme.annotations.AbortedConfiguration;
 import org.configureme.annotations.AfterConfiguration;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
@@ -61,7 +62,7 @@ public class AgentConfig {
 		this.excludedProducers = excludedProducers;
 	}
 
-	@AfterConfiguration
+	@AfterConfiguration @AbortedConfiguration
 	public void afterConfiguration(){
 		if (includedProducers==null || includedProducers.length()==0 || includedProducers.trim().equals("*")){
 			includedProducersList = Collections.EMPTY_LIST;
@@ -79,6 +80,7 @@ public class AgentConfig {
 				tt[i] = tt[i].trim();
 			excludedProducersList = Arrays.asList(tt);
 		}
+		log.info("AgentConfig parsed and finished, includeAll: "+includeAll()+", inclList: "+includedProducersList+", exclList: "+excludedProducersList);
 	}
 
 	public List<String> getIncludedProducersList(){
