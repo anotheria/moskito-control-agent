@@ -29,6 +29,8 @@ public class Agent{
 			ConfigurationManager.INSTANCE.configure(agentConfig);
 		}catch(IllegalArgumentException e){
 			log.info("No agent configuration found, consult MoSKito-Control-Agent documentation for details on configuring the agent.");
+			//let it build internal lists.
+			agentConfig.afterConfiguration();
 		}
 
 	}
