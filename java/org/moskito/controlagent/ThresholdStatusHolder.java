@@ -3,7 +3,7 @@ package org.moskito.controlagent;
 import net.anotheria.moskito.core.threshold.ThresholdStatus;
 
 /**
- * TODO comment this class
+ * Container class for the threshold status and message.
  *
  * @author lrosenberg
  * @since 15.04.13 22:28
