@@ -1,7 +1,14 @@
 package org.moskito.controlagent;
 
+import net.anotheria.util.StringUtils;
+import org.apache.log4j.Logger;
+import org.configureme.annotations.AfterConfiguration;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Configuration of the agent.
@@ -9,8 +16,14 @@ import org.configureme.annotations.ConfigureMe;
  * @author lrosenberg
  * @since 15.04.13 20:33
  */
-@ConfigureMe
+@ConfigureMe(name="agent")
 public class AgentConfig {
+
+	/**
+	 * Logger.
+	 */
+	private static Logger log = Logger.getLogger(AgentConfig.class);
+
 	/**
 	 * Included producer names, comma separated or '*'.
 	 */
@@ -22,6 +35,15 @@ public class AgentConfig {
 	 */
 	@Configure
 	private String excludedProducers;
+
+	/**
+	 * Post-processed list with included producers.
+	 */
+	private List<String> includedProducersList;
+	/**
+	 * Post-processed list with excluded producers.
+	 */
+	private List<String> excludedProducersList;
 
 	public String getIncludedProducers() {
 		return includedProducers;
@@ -38,4 +60,41 @@ public class AgentConfig {
 	public void setExcludedProducers(String excludedProducers) {
 		this.excludedProducers = excludedProducers;
 	}
+
+	@AfterConfiguration
+	public void afterConfiguration(){
+		if (includedProducers==null || includedProducers.length()==0 || includedProducers.trim().equals("*")){
+			includedProducersList = Collections.EMPTY_LIST;
+		}else{
+			String tt[] = StringUtils.tokenize(includedProducers, ',');
+			for (int i=0; i<tt.length; i++)
+				tt[i] = tt[i].trim();
+			includedProducersList = Arrays.asList(tt);
+		}
+		if (excludedProducers==null || excludedProducers.length()==0){
+			excludedProducersList = Collections.EMPTY_LIST;
+		}else{
+			String tt[] = StringUtils.tokenize(excludedProducers, ',');
+			for (int i=0; i<tt.length; i++)
+				tt[i] = tt[i].trim();
+			excludedProducersList = Arrays.asList(tt);
+		}
+	}
+
+	public List<String> getIncludedProducersList(){
+		return includedProducersList;
+	}
+
+	public List<String> getExcludedProducersList(){
+		return excludedProducersList;
+	}
+
+	/**
+	 * Returns true if all producers should be included.
+	 * @return
+	 */
+	public boolean includeAll(){
+		return includedProducersList.size()==0 && excludedProducersList.size() == 0;
+	}
+
 }
