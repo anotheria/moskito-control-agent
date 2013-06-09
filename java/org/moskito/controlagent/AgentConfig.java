@@ -16,7 +16,7 @@ import java.util.List;
  * @author lrosenberg
  * @since 15.04.13 20:33
  */
-@ConfigureMe
+@ConfigureMe(name="agent")
 public class AgentConfig {
 
 	/**
