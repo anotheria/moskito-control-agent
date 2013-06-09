@@ -39,7 +39,7 @@ public class HttpEndpoint implements Filter {
 		out.write(data);
 		out.flush();
 		out.close();
-		return ; //no chain do filter, because nothing should be listening after us.
+		return ;
 	}
 
 	@Override
