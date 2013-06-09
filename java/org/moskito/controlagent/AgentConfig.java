@@ -69,10 +69,10 @@ public class AgentConfig {
 			String tt[] = StringUtils.tokenize(includedProducers, ',');
 			for (int i=0; i<tt.length; i++)
 				tt[i] = tt[i].trim();
-			excludedProducersList = Arrays.asList(tt);
+			includedProducersList = Arrays.asList(tt);
 		}
 		if (excludedProducers==null || excludedProducers.length()==0){
-			includedProducersList = Collections.EMPTY_LIST;
+			excludedProducersList = Collections.EMPTY_LIST;
 		}else{
 			String tt[] = StringUtils.tokenize(excludedProducers, ',');
 			for (int i=0; i<tt.length; i++)
