@@ -10,7 +10,7 @@
 	<groupId>org.moskito</groupId>
 	<artifactId>moskito-control-agent</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>MoSKito Control Agent</name>
     <dependencies>
         <!-- we declare moskito-core as provided because we assume that you have moskito-core at this moment,
