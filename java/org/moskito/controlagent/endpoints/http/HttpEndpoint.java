@@ -23,7 +23,7 @@ import java.io.OutputStream;
  */
 @WebFilter(description = "MoSKito Control Endpoint", filterName = "MoSKitoControlEndpoint",
 		urlPatterns = {
-		"/moskito-control-agent/thresholdStatus"
+		"/moskito-control-agent/status"
 	})
 public class HttpEndpoint implements Filter {
 	@Override
