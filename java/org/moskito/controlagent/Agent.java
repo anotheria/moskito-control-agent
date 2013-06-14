@@ -1,8 +1,12 @@
 package org.moskito.controlagent;
 
+import net.anotheria.moskito.core.threshold.ExtendedThresholdStatus;
+import net.anotheria.moskito.core.threshold.ThresholdInStatus;
 import net.anotheria.moskito.core.threshold.ThresholdRepository;
 import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
+
+import java.util.List;
 
 /**
  * Agent is the local center of everything.
@@ -49,16 +53,28 @@ public class Agent{
 			return new ThresholdStatusHolder();
 
 		ThresholdStatusHolder tsh = new ThresholdStatusHolder();
+		ExtendedThresholdStatus thresholdStatus;
+
 		if (agentConfig.includeAll()){
-			tsh.setStatus(repository.getWorstStatus());
+			thresholdStatus = repository.getExtendedWorstStatus(null);
 		}else{
 			if (agentConfig.getIncludedProducersList().size()>0){
-				tsh.setStatus(repository.getWorstStatus(agentConfig.getIncludedProducersList()));
+				thresholdStatus = repository.getExtendedWorstStatus(agentConfig.getIncludedProducersList());
 			}else{
-				log.warn("repository.getWorstStatusWithout is not yet implemented, skipping!");
-				//tsh.setStatus(repository.getWorstStatusWithout(agentConfig.getExcludedProducersList()));)
+				thresholdStatus = repository.getExtendedWorstStatusWithout(agentConfig.getExcludedProducersList());
 			}
 		}
+
+		tsh.setStatus(thresholdStatus.getStatus());
+		List<ThresholdInStatus> tisList = thresholdStatus.getThresholds();
+		for (ThresholdInStatus tis : tisList){
+			ThresholdInfo info = new ThresholdInfo();
+			info.setValue(tis.getValue());
+			info.setMessage(tis.getAdditionalMessage());
+			info.setThreshold(tis.getThresholdName());
+			tsh.addThresholdInfo(info);
+		}
+
 
 		return tsh;
 	}
