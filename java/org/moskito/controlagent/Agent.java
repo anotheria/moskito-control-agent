@@ -3,6 +3,7 @@ package org.moskito.controlagent;
 import net.anotheria.moskito.core.threshold.ExtendedThresholdStatus;
 import net.anotheria.moskito.core.threshold.ThresholdInStatus;
 import net.anotheria.moskito.core.threshold.ThresholdRepository;
+import net.anotheria.moskito.core.threshold.ThresholdStatus;
 import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
 
@@ -66,13 +67,16 @@ public class Agent{
 		}
 
 		tsh.setStatus(thresholdStatus.getStatus());
-		List<ThresholdInStatus> tisList = thresholdStatus.getThresholds();
-		for (ThresholdInStatus tis : tisList){
-			ThresholdInfo info = new ThresholdInfo();
-			info.setValue(tis.getValue());
-			info.setMessage(tis.getAdditionalMessage());
-			info.setThreshold(tis.getThresholdName());
-			tsh.addThresholdInfo(info);
+		//only submit values for not-green status.
+		if (thresholdStatus.getStatus()!= ThresholdStatus.GREEN){
+			List<ThresholdInStatus> tisList = thresholdStatus.getThresholds();
+			for (ThresholdInStatus tis : tisList){
+				ThresholdInfo info = new ThresholdInfo();
+				info.setValue(tis.getValue());
+				info.setMessage(tis.getAdditionalMessage());
+				info.setThreshold(tis.getThresholdName());
+				tsh.addThresholdInfo(info);
+			}
 		}
 
 
