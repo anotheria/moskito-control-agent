@@ -12,7 +12,8 @@ import com.google.gson.GsonBuilder;
 public class EndpointUtility {
 	public static final byte[] object2JSON(Object obj){
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String jsonOutput = gson.toJson(obj);
+		ReplyWrapper wrapper = new ReplyWrapper(obj);
+		String jsonOutput = gson.toJson(wrapper);
 		return jsonOutput.getBytes();
 	}
 }
