@@ -1,8 +1,12 @@
 package org.moskito.controlagent.endpoints.http;
 
+import net.anotheria.moskito.core.accumulation.AccumulatedValue;
 import net.anotheria.moskito.core.accumulation.Accumulator;
 import net.anotheria.moskito.core.accumulation.AccumulatorRepository;
 import net.anotheria.util.StringUtils;
+import org.apache.log4j.Logger;
+import org.moskito.controlagent.AccumulatorDataItem;
+import org.moskito.controlagent.AccumulatorHolder;
 import org.moskito.controlagent.AccumulatorListItem;
 import org.moskito.controlagent.Agent;
 import org.moskito.controlagent.ThresholdStatusHolder;
@@ -18,6 +22,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,6 +38,8 @@ import java.util.List;
 		"/moskito-control-agent/*"
 	})
 public class HttpEndpoint implements Filter {
+
+	private static Logger log = Logger.getLogger(HttpEndpoint.class);
 
 	static enum COMMAND{
 		/**
@@ -70,13 +78,15 @@ public class HttpEndpoint implements Filter {
 			case ACCUMULATORS:
 				accumulators(servletRequest, servletResponse, tokens);
 				break;
+			case ACCUMULATOR:
+				accumulator(servletRequest, servletResponse, tokens);
+				break;
 			default:
 				throw new AssertionError("Unrecognized command "+command);
 		}
 	}
 
 	private void accumulators(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
-		System.out.println("parameters: "+parameters.length);
 		List<Accumulator> accumulators = AccumulatorRepository.getInstance ().getAccumulators();
 		List<AccumulatorListItem> ret = new LinkedList<AccumulatorListItem>();
 		for (Accumulator acc : accumulators){
@@ -86,11 +96,22 @@ public class HttpEndpoint implements Filter {
 	}
 
 	private void accumulator(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
-		System.out.println("parameters: "+parameters.length);
-		List<Accumulator> accumulators = AccumulatorRepository.getInstance ().getAccumulators();
-		List<AccumulatorListItem> ret = new LinkedList<AccumulatorListItem>();
-		for (Accumulator acc : accumulators){
-			ret.add(new AccumulatorListItem(acc.getName(), acc.getValues().size()));
+		if (parameters.length==1)
+			throw new IllegalArgumentException("No accumulators specified");
+		HashMap<String, AccumulatorHolder> ret = new HashMap<String, AccumulatorHolder>();
+		for (int i=1; i<parameters.length; i++){
+			String requestedAccumulatorName = parameters[i];
+			requestedAccumulatorName = URLDecoder.decode(requestedAccumulatorName, "UTF-8");
+			Accumulator acc = AccumulatorRepository.getInstance ().getByName(requestedAccumulatorName);
+			if (acc==null){
+				log.warn("Requested not existing accumulator "+parameters[i]);
+				continue;
+			}
+			AccumulatorHolder holder = new AccumulatorHolder(acc.getName());
+			List<AccumulatedValue> accValues = acc.getValues();
+			for (AccumulatedValue accValue:accValues)
+				holder.addItem(new AccumulatorDataItem(accValue.getTimestamp(), accValue.getValue()));
+			ret.put(holder.getName(), holder);
 		}
 		writeReply(servletResponse, ret);
 	}
