@@ -62,8 +62,8 @@
 		</testResources>
 	</build>
     <scm>
-        <url>git:https://github.com/anotheria/moskito-control-agent</url>
-        <connection>scm:git:https://github.com/anotheria/moskito-control-agent</connection>
-        <developerConnection>scm:git:https://github.com/anotheria/moskito-control-agent</developerConnection>
+        <url>git@github.com:anotheria/moskito-control-agent.git</url>
+        <connection>scm:git:git@github.com:anotheria/moskito-control-agent.git</connection>
+        <developerConnection>scm:git:git@github.com:anotheria/moskito-control-agent.git</developerConnection>
     </scm>
 </project>
