@@ -1,4 +1,4 @@
-package org.moskito.controlagent;
+package org.moskito.controlagent.data.accumulator;
 
 /**
  * List item for the accumulator list.
