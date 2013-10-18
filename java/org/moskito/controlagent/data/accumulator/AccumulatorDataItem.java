@@ -1,7 +1,7 @@
-package org.moskito.controlagent;
+package org.moskito.controlagent.data.accumulator;
 
 /**
- * TODO comment this class
+ * Contains single accumulator data.
  *
  * @author lrosenberg
  * @since 18.06.13 09:25
