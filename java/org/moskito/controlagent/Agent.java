@@ -1,13 +1,13 @@
 package org.moskito.controlagent;
 
-import net.anotheria.moskito.core.threshold.ExtendedThresholdStatus;
-import net.anotheria.moskito.core.threshold.ThresholdInStatus;
-import net.anotheria.moskito.core.threshold.ThresholdRepository;
-import net.anotheria.moskito.core.threshold.ThresholdStatus;
+import net.anotheria.moskito.core.threshold.*;
+import org.apache.log4j.Logger;
 import org.configureme.ConfigurationManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.moskito.controlagent.data.status.ThresholdInfo;
+import org.moskito.controlagent.data.status.ThresholdStatusHolder;
+import org.moskito.controlagent.data.threshold.ThresholdDataItem;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
 public class Agent{
 
 	/**
-	 * Instance of the threshold repository for lookup of the underlying status.
+	 * Instance of the threshold repository for lookup of the underlying status and thresholds.
 	 */
 	private ThresholdRepository repository;
 	/**
@@ -26,7 +26,8 @@ public class Agent{
 	/**
 	 * Logger.
 	 */
-	private static Logger log = LoggerFactory.getLogger(Agent.class);
+	private static Logger log = Logger.getLogger(Agent.class);
+
 
 	private Agent(){
 		repository = ThresholdRepository.getInstance();
@@ -41,13 +42,25 @@ public class Agent{
 
 	}
 
+    /**
+     * @return {@link Agent} singleton instance.
+     */
 	public static Agent getInstance(){
 		return AgentInstanceHolder.instance;
 	}
 
+    /**
+     * {@link Agent} instance holder.
+     */
+    private static class AgentInstanceHolder{
+        static final Agent instance = new Agent();
+    }
+
+
 	/**
 	 * Returns the local threshold status.
-	 * @return
+     *
+	 * @return status of component agent running on.
 	 */
 	public ThresholdStatusHolder getThresholdStatus(){
 		//assuming you have no core.
@@ -84,8 +97,27 @@ public class Agent{
 		return tsh;
 	}
 
-	private static class AgentInstanceHolder{
-		static final Agent instance = new Agent();
-	}
+    /**
+     * Returns local thresholds.
+     *
+     * @return thresholds of component agent running on.
+     */
+    public List<ThresholdDataItem> getThresholds(){
+        if (repository == null)
+            return new LinkedList<ThresholdDataItem>();
+
+        List<ThresholdDataItem> items = new LinkedList<ThresholdDataItem>();
+        List<Threshold> thresholds = repository.getThresholds();
+        for (Threshold threshold : thresholds){
+            ThresholdDataItem item = new ThresholdDataItem();
+            item.setName(threshold.getName());
+            item.setStatus(threshold.getStatus());
+            item.setLastValue(threshold.getLastValue());
+            item.setStatusChangeTimestamp(threshold.getStatusChangeTimestamp());
+            items.add(item);
+        }
+
+        return items;
+    }
 
 }

@@ -4,14 +4,14 @@ import net.anotheria.moskito.core.accumulation.AccumulatedValue;
 import net.anotheria.moskito.core.accumulation.Accumulator;
 import net.anotheria.moskito.core.accumulation.AccumulatorRepository;
 import net.anotheria.util.StringUtils;
-import org.moskito.controlagent.AccumulatorDataItem;
-import org.moskito.controlagent.AccumulatorHolder;
-import org.moskito.controlagent.AccumulatorListItem;
+import org.apache.log4j.Logger;
+import org.moskito.controlagent.data.accumulator.AccumulatorDataItem;
+import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
+import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
 import org.moskito.controlagent.Agent;
-import org.moskito.controlagent.ThresholdStatusHolder;
+import org.moskito.controlagent.data.status.ThresholdStatusHolder;
+import org.moskito.controlagent.data.threshold.ThresholdDataItem;
 import org.moskito.controlagent.endpoints.EndpointUtility;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * TODO comment this class
+ * Provides data replying to MoSKito Control HTTP-requests.
  *
  * @author lrosenberg
  * @since 15.04.13 20:43
@@ -40,7 +40,7 @@ import java.util.List;
 	})
 public class HttpEndpoint implements Filter {
 
-	private static Logger log = LoggerFactory.getLogger(HttpEndpoint.class);
+	private static Logger log = Logger.getLogger(HttpEndpoint.class);
 
 	static enum COMMAND{
 		/**
@@ -54,7 +54,11 @@ public class HttpEndpoint implements Filter {
 		/**
 		 * Requests the data for one or multiple accumulators.
 		 */
-		ACCUMULATOR
+		ACCUMULATOR,
+        /**
+         * Requests the data for thresholds of this component.
+         */
+        THRESHOLDS
 	};
 
 	public static final String MAPPED_NAME = "moskito-control-agent";
@@ -82,12 +86,21 @@ public class HttpEndpoint implements Filter {
 			case ACCUMULATOR:
 				accumulator(servletRequest, servletResponse, tokens);
 				break;
+            case THRESHOLDS:
+                thresholds(servletRequest, servletResponse, tokens);
+                break;
 			default:
 				throw new AssertionError("Unrecognized command "+command);
 		}
 	}
 
-	private void accumulators(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
+    private void status(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
+        ThresholdStatusHolder status = Agent.getInstance().getThresholdStatus();
+        writeReply(servletResponse, status);
+
+    }
+
+    private void accumulators(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
 		List<Accumulator> accumulators = AccumulatorRepository.getInstance ().getAccumulators();
 		List<AccumulatorListItem> ret = new LinkedList<AccumulatorListItem>();
 		for (Accumulator acc : accumulators){
@@ -117,6 +130,11 @@ public class HttpEndpoint implements Filter {
 		writeReply(servletResponse, ret);
 	}
 
+    private void thresholds(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException {
+        List<ThresholdDataItem> thresholds = Agent.getInstance().getThresholds();
+        writeReply(servletResponse, thresholds);
+    }
+
 	void writeReply(ServletResponse servletResponse, Object parameter) throws IOException{
 		byte[] data = EndpointUtility.object2JSON(parameter);
 		OutputStream out = servletResponse.getOutputStream();
@@ -125,13 +143,8 @@ public class HttpEndpoint implements Filter {
 		out.close();
 	}
 
-	private void status(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
-		ThresholdStatusHolder status = Agent.getInstance().getThresholdStatus();
-		writeReply(servletResponse, status);
-
-	}
-
 	@Override
 	public void destroy() {
 	}
+
 }
