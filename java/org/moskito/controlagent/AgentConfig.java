@@ -1,11 +1,12 @@
 package org.moskito.controlagent;
 
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
 import org.configureme.annotations.AbortedConfiguration;
 import org.configureme.annotations.AfterConfiguration;
 import org.configureme.annotations.Configure;
 import org.configureme.annotations.ConfigureMe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class AgentConfig {
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(AgentConfig.class);
+	private static Logger log = LoggerFactory.getLogger(AgentConfig.class);
 
 	/**
 	 * Included producer names, comma separated or '*'.
