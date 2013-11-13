@@ -1,11 +1,16 @@
 package org.moskito.controlagent;
 
-import net.anotheria.moskito.core.threshold.*;
-import org.apache.log4j.Logger;
+import net.anotheria.moskito.core.threshold.ExtendedThresholdStatus;
+import net.anotheria.moskito.core.threshold.Threshold;
+import net.anotheria.moskito.core.threshold.ThresholdInStatus;
+import net.anotheria.moskito.core.threshold.ThresholdRepository;
+import net.anotheria.moskito.core.threshold.ThresholdStatus;
 import org.configureme.ConfigurationManager;
 import org.moskito.controlagent.data.status.ThresholdInfo;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
 import org.moskito.controlagent.data.threshold.ThresholdDataItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +31,7 @@ public class Agent{
 	/**
 	 * Logger.
 	 */
-	private static Logger log = Logger.getLogger(Agent.class);
+	private static Logger log = LoggerFactory.getLogger(Agent.class);
 
 
 	private Agent(){
