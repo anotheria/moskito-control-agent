@@ -4,14 +4,15 @@ import net.anotheria.moskito.core.accumulation.AccumulatedValue;
 import net.anotheria.moskito.core.accumulation.Accumulator;
 import net.anotheria.moskito.core.accumulation.AccumulatorRepository;
 import net.anotheria.util.StringUtils;
-import org.apache.log4j.Logger;
+import org.moskito.controlagent.Agent;
 import org.moskito.controlagent.data.accumulator.AccumulatorDataItem;
 import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
 import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
-import org.moskito.controlagent.Agent;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
 import org.moskito.controlagent.data.threshold.ThresholdDataItem;
 import org.moskito.controlagent.endpoints.EndpointUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -40,7 +41,7 @@ import java.util.List;
 	})
 public class HttpEndpoint implements Filter {
 
-	private static Logger log = Logger.getLogger(HttpEndpoint.class);
+	private static Logger log = LoggerFactory.getLogger(HttpEndpoint.class);
 
 	static enum COMMAND{
 		/**
