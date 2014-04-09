@@ -1,11 +1,7 @@
 package org.moskito.controlagent.endpoints.http;
 
-import net.anotheria.moskito.core.accumulation.AccumulatedValue;
-import net.anotheria.moskito.core.accumulation.Accumulator;
-import net.anotheria.moskito.core.accumulation.AccumulatorRepository;
 import net.anotheria.util.StringUtils;
 import org.moskito.controlagent.Agent;
-import org.moskito.controlagent.data.accumulator.AccumulatorDataItem;
 import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
 import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
@@ -24,10 +20,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLDecoder;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides data replying to MoSKito Control HTTP-requests.
@@ -102,33 +97,19 @@ public class HttpEndpoint implements Filter {
     }
 
     private void accumulators(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
-		List<Accumulator> accumulators = AccumulatorRepository.getInstance ().getAccumulators();
-		List<AccumulatorListItem> ret = new LinkedList<AccumulatorListItem>();
-		for (Accumulator acc : accumulators){
-			ret.add(new AccumulatorListItem(acc.getName(), acc.getValues().size()));
-		}
+		List<AccumulatorListItem> ret = Agent.getInstance().getAvailableAccumulators();
 		writeReply(servletResponse, ret);
 	}
 
 	private void accumulator(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException{
 		if (parameters.length==1)
 			throw new IllegalArgumentException("No accumulators specified");
-		HashMap<String, AccumulatorHolder> ret = new HashMap<String, AccumulatorHolder>();
+		LinkedList<String> names = new LinkedList<String>();
 		for (int i=1; i<parameters.length; i++){
-			String requestedAccumulatorName = parameters[i];
-			requestedAccumulatorName = URLDecoder.decode(requestedAccumulatorName, "UTF-8");
-			Accumulator acc = AccumulatorRepository.getInstance ().getByName(requestedAccumulatorName);
-			if (acc==null){
-				log.warn("Requested not existing accumulator "+parameters[i]);
-				continue;
-			}
-			AccumulatorHolder holder = new AccumulatorHolder(acc.getName());
-			List<AccumulatedValue> accValues = acc.getValues();
-			for (AccumulatedValue accValue:accValues)
-				holder.addItem(new AccumulatorDataItem(accValue.getTimestamp(), accValue.getValue()));
-			ret.put(holder.getName(), holder);
+			names.add(parameters[i]);
 		}
-		writeReply(servletResponse, ret);
+		Map<String, AccumulatorHolder> accumulators = Agent.getInstance().getAccumulatorsData(names);
+		writeReply(servletResponse, accumulators);
 	}
 
     private void thresholds(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException {

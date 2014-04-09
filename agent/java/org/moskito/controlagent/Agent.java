@@ -1,19 +1,29 @@
 package org.moskito.controlagent;
 
+import net.anotheria.moskito.core.accumulation.AccumulatedValue;
+import net.anotheria.moskito.core.accumulation.Accumulator;
+import net.anotheria.moskito.core.accumulation.AccumulatorRepository;
 import net.anotheria.moskito.core.threshold.ExtendedThresholdStatus;
 import net.anotheria.moskito.core.threshold.Threshold;
 import net.anotheria.moskito.core.threshold.ThresholdInStatus;
 import net.anotheria.moskito.core.threshold.ThresholdRepository;
 import net.anotheria.moskito.core.threshold.ThresholdStatus;
 import org.configureme.ConfigurationManager;
+import org.moskito.controlagent.data.accumulator.AccumulatorDataItem;
+import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
+import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
 import org.moskito.controlagent.data.status.ThresholdInfo;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
 import org.moskito.controlagent.data.threshold.ThresholdDataItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Agent is the local center of everything.
@@ -125,4 +135,34 @@ public class Agent{
         return items;
     }
 
+	public List<AccumulatorListItem> getAvailableAccumulators(){
+		List<Accumulator> accumulators = AccumulatorRepository.getInstance().getAccumulators();
+		List<AccumulatorListItem> ret = new LinkedList<AccumulatorListItem>();
+		for (Accumulator acc : accumulators){
+			ret.add(new AccumulatorListItem(acc.getName(), acc.getValues().size()));
+		}
+		return ret;
+	}
+
+	public Map<String, AccumulatorHolder> getAccumulatorsData(List<String> accumulatorNames){
+		HashMap<String, AccumulatorHolder> ret = new HashMap<String, AccumulatorHolder>();
+		for (String requestedAccumulatorName : accumulatorNames){
+			try {
+				requestedAccumulatorName = URLDecoder.decode(requestedAccumulatorName, "UTF-8");
+			}catch(UnsupportedEncodingException e){
+				throw new IllegalStateException("End of the known world is near, UTF-8 is not supported", e);
+			}
+			Accumulator acc = AccumulatorRepository.getInstance ().getByName(requestedAccumulatorName);
+			if (acc==null){
+				log.warn("Requested not existing accumulator "+requestedAccumulatorName);
+				continue;
+			}
+			AccumulatorHolder holder = new AccumulatorHolder(acc.getName());
+			List<AccumulatedValue> accValues = acc.getValues();
+			for (AccumulatedValue accValue:accValues)
+				holder.addItem(new AccumulatorDataItem(accValue.getTimestamp(), accValue.getValue()));
+			ret.put(holder.getName(), holder);
+		}
+		return ret;
+	}
 }
