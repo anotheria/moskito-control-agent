@@ -1,6 +1,7 @@
 package org.moskito.controlagent.endpoints.rmi;
 
 import net.anotheria.anoprise.metafactory.Service;
+import org.distributeme.annotation.DistributeMe;
 import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
 import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @author lrosenberg
  * @since 09.04.14 13:50
  */
+@DistributeMe(moskitoSupport = false, agentsSupport = false)
 public interface AgentService extends Service{
 	/**
 	 * Returns the current status.
