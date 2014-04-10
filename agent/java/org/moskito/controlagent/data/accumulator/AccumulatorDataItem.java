@@ -1,12 +1,14 @@
 package org.moskito.controlagent.data.accumulator;
 
+import java.io.Serializable;
+
 /**
  * Contains single accumulator data.
  *
  * @author lrosenberg
  * @since 18.06.13 09:25
  */
-public class AccumulatorDataItem {
+public class AccumulatorDataItem implements Serializable{
 	private long timestamp;
 	private String value;
 

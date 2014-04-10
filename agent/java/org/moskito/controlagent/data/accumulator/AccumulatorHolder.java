@@ -1,5 +1,6 @@
 package org.moskito.controlagent.data.accumulator;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author lrosenberg
  * @since 18.06.13 09:33
  */
-public class AccumulatorHolder {
+public class AccumulatorHolder implements Serializable{
 	private String name;
 	private List<AccumulatorDataItem> items;
 
