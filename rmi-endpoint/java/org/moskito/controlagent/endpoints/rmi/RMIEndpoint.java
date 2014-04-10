@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.Permission;
 
 /**
  * This is a utility class that allows to start the embedded endpoint with one method call.
@@ -21,13 +19,6 @@ public final class RMIEndpoint {
 		String clazzName = "org.moskito.controlagent.endpoints.rmi.generated.AgentServer";
 		String methodName = "createServiceAndRegisterLocally";
 
-		if (System.getSecurityManager()==null) {
-			System.setSecurityManager(new SecurityManager() {
-				public void checkPermission(Permission perm) {
-				}
-			});
-		}
-
 		Class agentServerClass = null;
 		try {
 			agentServerClass = Class.forName(clazzName);
@@ -36,9 +27,9 @@ public final class RMIEndpoint {
 		}
 
 		try {
-			Method m = agentServerClass.getMethod(methodName);
-			//call the static method
-			m.invoke(null);
+			//call the static methods
+			agentServerClass.getMethod("init").invoke(null);
+			agentServerClass.getMethod(methodName).invoke(null);
 		} catch (NoSuchMethodException e) {
 			throw new RMIEndpointException("Couldn't find my target method in agent class - report to moskito-users@lists.anotheria.net", e);
 		} catch (IllegalAccessException e) {
