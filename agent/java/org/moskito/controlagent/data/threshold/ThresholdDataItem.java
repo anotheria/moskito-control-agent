@@ -2,12 +2,14 @@ package org.moskito.controlagent.data.threshold;
 
 import net.anotheria.moskito.core.threshold.ThresholdStatus;
 
+import java.io.Serializable;
+
 /**
  * Contains single threshold data.
  *
  * @author: Vladyslav Bezuhlyi
  */
-public class ThresholdDataItem {
+public class ThresholdDataItem implements Serializable{
 
     private String name;
 

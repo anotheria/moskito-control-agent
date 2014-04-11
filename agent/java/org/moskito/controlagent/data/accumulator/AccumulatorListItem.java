@@ -1,12 +1,14 @@
 package org.moskito.controlagent.data.accumulator;
 
+import java.io.Serializable;
+
 /**
  * List item for the accumulator list.
  *
  * @author lrosenberg
  * @since 18.06.13 08:45
  */
-public class AccumulatorListItem {
+public class AccumulatorListItem implements Serializable{
 	/**
 	 * Name of the accumulator.
 	 */

@@ -8,10 +8,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.moskito</groupId>
-	<artifactId>moskito-control-agent</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0.1-SNAPSHOT</version>
-	<name>MoSKito Control Agent</name>
+	<artifactId>moskito-control-agent-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.1.0-SNAPSHOT</version>
+	<name>MoSKito Control Agent Parent</name>
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -28,43 +28,19 @@
         <dependency>
             <groupId>net.anotheria</groupId>
             <artifactId>moskito-core</artifactId>
-            <version>2.4.1</version>
-            <scope>provided</scope>
+            <version>2.4.3</version>
         </dependency>
         <dependency>
             <groupId>net.anotheria</groupId>
             <artifactId>configureme</artifactId>
             <version>2.3.0</version>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-        </dependency>
 	</dependencies>
-
-
-	<build>
-<!--		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources> -->
-		<plugins>
-		</plugins>
-		<testResources>
-			<testResource>
-				<directory>${project.basedir}/test/appdata</directory>
-			</testResource>
-		</testResources>
-	</build>
+	<modules>
+		<module>agent</module>
+		<module>rmi-endpoint</module>
+        <module>http-endpoint</module>
+	</modules>
     <scm>
         <url>git@github.com:anotheria/moskito-control-agent.git</url>
         <connection>scm:git:git@github.com:anotheria/moskito-control-agent.git</connection>

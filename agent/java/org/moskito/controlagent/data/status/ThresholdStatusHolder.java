@@ -2,6 +2,7 @@ package org.moskito.controlagent.data.status;
 
 import net.anotheria.moskito.core.threshold.ThresholdStatus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author lrosenberg
  * @since 15.04.13 22:28
  */
-public class ThresholdStatusHolder {
+public class ThresholdStatusHolder implements Serializable{
 	/**
 	 * Status.
 	 */
