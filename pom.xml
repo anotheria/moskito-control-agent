@@ -28,8 +28,7 @@
         <dependency>
             <groupId>net.anotheria</groupId>
             <artifactId>moskito-core</artifactId>
-            <version>2.4.1</version>
-            <scope>provided</scope>
+            <version>2.4.3</version>
         </dependency>
         <dependency>
             <groupId>net.anotheria</groupId>
@@ -40,6 +39,7 @@
 	<modules>
 		<module>agent</module>
 		<module>rmi-endpoint</module>
+        <module>http-endpoint</module>
 	</modules>
     <scm>
         <url>git@github.com:anotheria/moskito-control-agent.git</url>
