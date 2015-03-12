@@ -1,12 +1,14 @@
 package org.moskito.controlagent.data.status;
 
+import java.io.Serializable;
+
 /**
  * TODO comment this class
  *
  * @author lrosenberg
  * @since 14.06.13 11:52
  */
-public class ThresholdInfo {
+public class ThresholdInfo implements Serializable {
 	private String threshold;
 
 	private String value;
