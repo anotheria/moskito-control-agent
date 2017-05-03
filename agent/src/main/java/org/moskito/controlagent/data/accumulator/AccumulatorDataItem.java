@@ -9,6 +9,9 @@ import java.io.Serializable;
  * @since 18.06.13 09:25
  */
 public class AccumulatorDataItem implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	private long timestamp;
 	private String value;
 

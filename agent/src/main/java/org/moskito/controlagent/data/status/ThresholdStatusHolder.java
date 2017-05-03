@@ -13,6 +13,9 @@ import java.util.List;
  * @since 15.04.13 22:28
  */
 public class ThresholdStatusHolder implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Status.
 	 */

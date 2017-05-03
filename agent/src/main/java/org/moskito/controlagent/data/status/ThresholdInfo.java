@@ -9,6 +9,9 @@ import java.io.Serializable;
  * @since 14.06.13 11:52
  */
 public class ThresholdInfo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private String threshold;
 
 	private String value;

@@ -11,6 +11,9 @@ import java.util.List;
  * @since 18.06.13 09:33
  */
 public class AccumulatorHolder implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	private List<AccumulatorDataItem> items;
 

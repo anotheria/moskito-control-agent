@@ -9,6 +9,9 @@ import java.io.Serializable;
  * @since 18.06.13 08:45
  */
 public class AccumulatorListItem implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Name of the accumulator.
 	 */
