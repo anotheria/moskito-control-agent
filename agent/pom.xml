@@ -20,15 +20,4 @@
             <version>2.2.4</version>
         </dependency>
 	</dependencies>
-
-
-	<build>
-		<plugins>
-		</plugins>
-		<testResources>
-			<testResource>
-				<directory>${project.basedir}/test/appdata</directory>
-			</testResource>
-		</testResources>
-	</build>
 </project>
