@@ -41,4 +41,13 @@ public class ThresholdInfo implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	@Override
+	public String toString() {
+		return "ThresholdInfo{" +
+				"threshold='" + threshold + '\'' +
+				", value='" + value + '\'' +
+				", message='" + message + '\'' +
+				'}';
+	}
 }
