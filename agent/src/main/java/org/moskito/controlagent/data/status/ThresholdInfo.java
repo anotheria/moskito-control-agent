@@ -47,7 +47,7 @@ public class ThresholdInfo implements Serializable {
 		return "ThresholdInfo{" +
 				"threshold='" + threshold + '\'' +
 				", value='" + value + '\'' +
-				", message='" + message + '\'' +
+				(message == null ? "" : ", message='" + message + '\'') +
 				'}';
 	}
 }
