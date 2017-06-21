@@ -1,7 +1,6 @@
 package org.moskito.controlagent.data.info;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.util.Map;
 
 public class SystemInfoProvider {
