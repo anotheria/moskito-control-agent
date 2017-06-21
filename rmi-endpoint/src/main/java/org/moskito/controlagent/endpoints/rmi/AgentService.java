@@ -4,6 +4,7 @@ import net.anotheria.anoprise.metafactory.Service;
 import org.distributeme.annotation.DistributeMe;
 import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
 import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
+import org.moskito.controlagent.data.info.SystemInfo;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
 import org.moskito.controlagent.data.threshold.ThresholdDataItem;
 
@@ -18,6 +19,9 @@ import java.util.Map;
  */
 @DistributeMe(moskitoSupport = false, agentsSupport = false)
 public interface AgentService extends Service{
+
+	SystemInfo getSystemInfo() throws AgentServiceException;
+
 	/**
 	 * Returns the current status.
 	 * @return
