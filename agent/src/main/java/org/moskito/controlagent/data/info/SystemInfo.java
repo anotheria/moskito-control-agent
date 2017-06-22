@@ -2,20 +2,39 @@ package org.moskito.controlagent.data.info;
 
 import java.io.Serializable;
 
+/**
+ * Contains information about monitored app  and its environment.
+ */
 public class SystemInfo implements Serializable{
 
-    private static final long serialVersionUID = 666L; // TODO : GENERATE ADEQUATE UID
+    private static final long serialVersionUID = -4103365897826888898L;
 
+    /**
+     * Version of java
+     */
     private String javaVersion;
+    /**
+     * Run command of monitored app
+     */
     private String startCommand;
+    /**
+     * Name of machine, where monitored app is launched
+     */
     private String machineName;
-    private long uptime;
+    /**
+     * Monitored app uptime
+     */
+    private String uptime;
 
-    public SystemInfo(String javaVersion, String startCommand, String machineName, long uptime) {
-        this.javaVersion = javaVersion;
-        this.startCommand = startCommand;
-        this.machineName = machineName;
-        this.uptime = uptime;
+    SystemInfo(){}
+
+    SystemInfo(SystemInfo info){
+
+        this.javaVersion = info.javaVersion;
+        this.startCommand = info.startCommand;
+        this.machineName = info.machineName;
+        this.uptime = info.uptime;
+
     }
 
     public String getJavaVersion() {
@@ -30,8 +49,34 @@ public class SystemInfo implements Serializable{
         return machineName;
     }
 
-    public long getUptime() {
+    public String getUptime() {
         return uptime;
+    }
+
+
+    public void setJavaVersion(String javaVersion) {
+        this.javaVersion = javaVersion;
+    }
+
+    public void setStartCommand(String startCommand) {
+        this.startCommand = startCommand;
+    }
+
+    public void setMachineName(String machineName) {
+        this.machineName = machineName;
+    }
+
+    public void setUptime(String uptime) {
+        this.uptime = uptime;
+    }
+
+    public String toString(){
+        return "{" +
+                    "javaVersion: "  + javaVersion  + "," +
+                    "startCommand: " + startCommand + "," +
+                    "machineName: "  + machineName  + "," +
+                    "uptime: "       + uptime +
+               "}";
     }
 
 }

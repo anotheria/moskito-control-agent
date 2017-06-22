@@ -20,6 +20,11 @@ import java.util.Map;
 @DistributeMe(moskitoSupport = false, agentsSupport = false)
 public interface AgentService extends Service{
 
+	/**
+	 * Returns info about this app and its environment
+	 * @return app info object
+	 * @throws AgentServiceException on
+	 */
 	SystemInfo getSystemInfo() throws AgentServiceException;
 
 	/**
