@@ -4,6 +4,8 @@ import net.anotheria.util.StringUtils;
 import org.moskito.controlagent.Agent;
 import org.moskito.controlagent.data.accumulator.AccumulatorHolder;
 import org.moskito.controlagent.data.accumulator.AccumulatorListItem;
+import org.moskito.controlagent.data.info.SystemInfo;
+import org.moskito.controlagent.data.info.SystemInfoProvider;
 import org.moskito.controlagent.data.status.ThresholdStatusHolder;
 import org.moskito.controlagent.data.threshold.ThresholdDataItem;
 import org.moskito.controlagent.endpoints.EndpointUtility;
@@ -39,6 +41,10 @@ public class HttpEndpoint implements Filter {
 	private static Logger log = LoggerFactory.getLogger(HttpEndpoint.class);
 
 	static enum COMMAND{
+		/**
+		 * Requests this application info
+		 */
+		INFO,
 		/**
 		 * Requests the status of this component. The status is calculated based on worst threshold.
 		 */
@@ -85,6 +91,9 @@ public class HttpEndpoint implements Filter {
             case THRESHOLDS:
                 thresholds(servletRequest, servletResponse, tokens);
                 break;
+			case INFO:
+				info(servletRequest, servletResponse, tokens);
+				break;
 			default:
 				throw new AssertionError("Unrecognized command "+command);
 		}
@@ -116,6 +125,11 @@ public class HttpEndpoint implements Filter {
         List<ThresholdDataItem> thresholds = Agent.getInstance().getThresholds();
         writeReply(servletResponse, thresholds);
     }
+
+	private void info(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException {
+		SystemInfo info = SystemInfoProvider.getInstance().getSystemInfo();
+		writeReply(servletResponse, info);
+	}
 
 	void writeReply(ServletResponse servletResponse, Object parameter) throws IOException{
 		byte[] data = EndpointUtility.object2JSON(parameter);
