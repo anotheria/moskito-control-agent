@@ -128,7 +128,7 @@ public class SystemInfoProvider {
 
             try {
                 return InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException | SecurityException ignored) {
+            } catch (UnknownHostException | SecurityException e) {
                 return "Unknown Computer";
             }
 
