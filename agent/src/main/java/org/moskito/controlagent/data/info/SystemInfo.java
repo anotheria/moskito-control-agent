@@ -28,15 +28,6 @@ public class SystemInfo implements Serializable{
 
     SystemInfo(){}
 
-    SystemInfo(SystemInfo info){
-
-        this.javaVersion = info.javaVersion;
-        this.startCommand = info.startCommand;
-        this.machineName = info.machineName;
-        this.uptime = info.uptime;
-
-    }
-
     public String getJavaVersion() {
         return javaVersion;
     }
@@ -53,20 +44,19 @@ public class SystemInfo implements Serializable{
         return uptime;
     }
 
-
-    public void setJavaVersion(String javaVersion) {
+    void setJavaVersion(String javaVersion) {
         this.javaVersion = javaVersion;
     }
 
-    public void setStartCommand(String startCommand) {
+    void setStartCommand(String startCommand) {
         this.startCommand = startCommand;
     }
 
-    public void setMachineName(String machineName) {
+    void setMachineName(String machineName) {
         this.machineName = machineName;
     }
 
-    public void setUptime(String uptime) {
+    void setUptime(String uptime) {
         this.uptime = uptime;
     }
 

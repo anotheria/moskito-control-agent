@@ -66,9 +66,16 @@ public class SystemInfoProvider {
      * @return {@link SystemInfo} filled with corresponding data
      */
     public SystemInfo getSystemInfo(){
-        SystemInfo info = new SystemInfo(initialInfo);
+
+        SystemInfo info = new SystemInfo();
+
+        info.setJavaVersion(initialInfo.getJavaVersion());
+        info.setMachineName(initialInfo.getMachineName());
+        info.setStartCommand(initialInfo.getStartCommand());
         info.setUptime(getUptime());
+
         return info;
+
     }
 
     /**
@@ -151,8 +158,8 @@ public class SystemInfoProvider {
         long uptimeTimestamp = ManagementFactory.getRuntimeMXBean().getUptime();
         StringBuilder uptime = new StringBuilder();
 
-        // builtin DateTime formatters do
-        // not used here, because they return day of the year.
+        // builtin DateTime formatters do not
+        // used here, because they return day of the year.
         // this may cause zeroing of days in the time string
         final long SECOND = 1000;
         final long MINUTE = SECOND * 60;
