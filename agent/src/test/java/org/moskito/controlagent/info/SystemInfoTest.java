@@ -4,6 +4,10 @@ import org.junit.Test;
 import org.moskito.controlagent.data.info.SystemInfo;
 import org.moskito.controlagent.data.info.SystemInfoProvider;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class SystemInfoTest {
@@ -18,10 +22,9 @@ public class SystemInfoTest {
     }
 
     @Test
-    public void testMachineName(){
+    public void testMachineName() throws UnknownHostException {
 
         String machineName = getInfo().getMachineName();
-
         // "Unknown Computer" means name not found.
         assertNotEquals("Unknown Computer", machineName);
         System.out.println("Machine name : " + machineName);

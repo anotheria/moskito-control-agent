@@ -3,6 +3,8 @@ package org.moskito.controlagent.data.info;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -122,8 +124,15 @@ public class SystemInfoProvider {
             return env.get("MACHINENAME");
         else if (env.containsKey("HOSTNAME"))
             return env.get("HOSTNAME");
-        else
-            return "Unknown Computer";
+        else {
+
+            try {
+                return InetAddress.getLocalHost().getHostName();
+            } catch (UnknownHostException | SecurityException ignored) {
+                return "Unknown Computer";
+            }
+
+        }
     }
 
     /**
