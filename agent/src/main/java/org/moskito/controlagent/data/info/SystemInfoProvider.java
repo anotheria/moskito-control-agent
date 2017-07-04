@@ -143,8 +143,8 @@ public class SystemInfoProvider {
         StringBuilder uptime = new StringBuilder();
 
         // builtin DateTime formatters do
-        // not used here, because the return day of the year.
-        // this may cause zeroing of days in time string
+        // not used here, because they return day of the year.
+        // this may cause zeroing of days in the time string
         final long SECOND = 1000;
         final long MINUTE = SECOND * 60;
         final long HOUR = MINUTE * 60;
