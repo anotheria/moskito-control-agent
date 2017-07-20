@@ -3,6 +3,8 @@ package org.moskito.controlagent.data.info;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 /**
@@ -64,9 +66,16 @@ public class SystemInfoProvider {
      * @return {@link SystemInfo} filled with corresponding data
      */
     public SystemInfo getSystemInfo(){
-        SystemInfo info = new SystemInfo(initialInfo);
+
+        SystemInfo info = new SystemInfo();
+
+        info.setJavaVersion(initialInfo.getJavaVersion());
+        info.setMachineName(initialInfo.getMachineName());
+        info.setStartCommand(initialInfo.getStartCommand());
         info.setUptime(getUptime());
+
         return info;
+
     }
 
     /**
@@ -122,8 +131,15 @@ public class SystemInfoProvider {
             return env.get("MACHINENAME");
         else if (env.containsKey("HOSTNAME"))
             return env.get("HOSTNAME");
-        else
-            return "Unknown Computer";
+        else {
+
+            try {
+                return InetAddress.getLocalHost().getHostName();
+            } catch (UnknownHostException | SecurityException e) {
+                return "Unknown Computer";
+            }
+
+        }
     }
 
     /**
@@ -142,9 +158,9 @@ public class SystemInfoProvider {
         long uptimeTimestamp = ManagementFactory.getRuntimeMXBean().getUptime();
         StringBuilder uptime = new StringBuilder();
 
-        // builtin DateTime formatters do
-        // not used here, because the return day of the year.
-        // this may cause zeroing of days in time string
+        // builtin DateTime formatters do not
+        // used here, because they return day of the year.
+        // this may cause zeroing of days in the time string
         final long SECOND = 1000;
         final long MINUTE = SECOND * 60;
         final long HOUR = MINUTE * 60;
