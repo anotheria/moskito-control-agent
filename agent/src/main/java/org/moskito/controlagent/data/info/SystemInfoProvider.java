@@ -28,6 +28,8 @@ public class SystemInfoProvider {
      */
     private SystemInfo initialInfo;
 
+    private UptimeProvider uptimeProvider = new DefaultUptimeProvider();
+
     /**
      * Constructor, that builds initial info
      * object, filling java version, app launch command and
@@ -72,7 +74,7 @@ public class SystemInfoProvider {
         info.setJavaVersion(initialInfo.getJavaVersion());
         info.setMachineName(initialInfo.getMachineName());
         info.setStartCommand(initialInfo.getStartCommand());
-        info.setUptime(getUptime());
+        info.setUptime(uptimeProvider.getUptime());
 
         return info;
 
@@ -122,8 +124,7 @@ public class SystemInfoProvider {
      * Returns machine name, where this app is launched
      * @return current machine name
      */
-    private String getMachineName()
-    {
+    private String getMachineName(){
         Map<String, String> env = System.getenv();
         if (env.containsKey("COMPUTERNAME"))
             return env.get("COMPUTERNAME");
@@ -142,51 +143,7 @@ public class SystemInfoProvider {
         }
     }
 
-    /**
-     * Returns string with
-     * this application uptime in format:
-     *
-     * {DAYS},{HOURS},{MINUTES},{SECONDS}
-     *
-     * All numbers do not contain leading zeros
-     *
-     * @return string that represents this app uptime
-     */
-    private String getUptime(){
-
-        // Retrieving milliseconds timestamp from java management framework
-        long uptimeTimestamp = ManagementFactory.getRuntimeMXBean().getUptime();
-        StringBuilder uptime = new StringBuilder();
-
-        // builtin DateTime formatters do not
-        // used here, because they return day of the year.
-        // this may cause zeroing of days in the time string
-        final long SECOND = 1000;
-        final long MINUTE = SECOND * 60;
-        final long HOUR = MINUTE * 60;
-        final long DAY = HOUR * 24;
-
-        uptime.append(
-                Long.valueOf(uptimeTimestamp / DAY).toString()
-        ).append(',');
-        uptimeTimestamp = uptimeTimestamp % DAY;
-
-        uptime.append(
-                Long.valueOf(uptimeTimestamp / HOUR).toString()
-        ).append(',');
-        uptimeTimestamp = uptimeTimestamp % HOUR;
-
-        uptime.append(
-                Long.valueOf(uptimeTimestamp / MINUTE).toString()
-        ).append(',');
-        uptimeTimestamp = uptimeTimestamp % MINUTE;
-
-        uptime.append(
-                Long.valueOf(uptimeTimestamp / SECOND).toString()
-        );
-
-        return uptime.toString();
-
-    }
-
+	public void setUptimeProvider(UptimeProvider uptimeProvider) {
+		this.uptimeProvider = uptimeProvider;
+	}
 }

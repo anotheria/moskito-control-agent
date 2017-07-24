@@ -24,7 +24,11 @@ public class SystemInfo implements Serializable{
     /**
      * Monitored app uptime
      */
-    private String uptime;
+    private long uptime;
+
+    private float uphours;
+
+    private float updays;
 
     SystemInfo(){}
 
@@ -40,7 +44,7 @@ public class SystemInfo implements Serializable{
         return machineName;
     }
 
-    public String getUptime() {
+    public long getUptime() {
         return uptime;
     }
 
@@ -56,16 +60,36 @@ public class SystemInfo implements Serializable{
         this.machineName = machineName;
     }
 
-    void setUptime(String uptime) {
-        this.uptime = uptime;
-    }
+	public void setUptime(long uptime) {
+		this.uptime = uptime;
+		setUphours((float)uptime * 100 / (1000*60*60) / 100);
+		setUpdays((float)uptime * 100 / (1000*60*60*24) / 100);
+	}
 
-    public String toString(){
+	public float getUphours() {
+		return uphours;
+	}
+
+	public void setUphours(float uphours) {
+		this.uphours = uphours;
+	}
+
+	public float getUpdays() {
+		return updays;
+	}
+
+	public void setUpdays(float updays) {
+		this.updays = updays;
+	}
+
+	public String toString(){
         return "{" +
                     "javaVersion: "  + javaVersion  + "," +
                     "startCommand: " + startCommand + "," +
                     "machineName: "  + machineName  + "," +
                     "uptime: "       + uptime +
+					"uphours: "  	 + uphours +
+					"updays: "		 + updays +
                "}";
     }
 

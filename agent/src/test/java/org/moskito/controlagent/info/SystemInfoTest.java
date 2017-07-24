@@ -1,14 +1,15 @@
 package org.moskito.controlagent.info;
 
 import org.junit.Test;
+import org.moskito.controlagent.data.info.DefaultUptimeProvider;
 import org.moskito.controlagent.data.info.SystemInfo;
 import org.moskito.controlagent.data.info.SystemInfoProvider;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SystemInfoTest {
 
@@ -27,7 +28,7 @@ public class SystemInfoTest {
         String machineName = getInfo().getMachineName();
         // "Unknown Computer" means name not found.
         assertNotEquals("Unknown Computer", machineName);
-        System.out.println("Machine name : " + machineName);
+        //System.out.println("Machine name : " + machineName);
 
     }
 
@@ -36,23 +37,32 @@ public class SystemInfoTest {
 
         final String uptimeRegexpPattern = "^\\d+,\\d+,\\d+,\\d+$";
 
-        String firstUptime = getInfo().getUptime();
-        Thread.sleep(1000);
-        String secondUptime = getInfo().getUptime();
+        long firstUptime = getInfo().getUptime();
+        Thread.sleep(100);
+        long secondUptime = getInfo().getUptime();
 
-        // Testing uptime string format
-        // Expected « {DAY},{HOUR},{MINUTE},{SECOND} »
-        assertTrue(firstUptime.matches(uptimeRegexpPattern));
-        // There was one second pause between first and second uptime get,
-        // so they must not be equal
         assertNotEquals(firstUptime, secondUptime);
         // Asserting that uptimes differ at least on one second
         assertTrue(
-                getUptimeStringSeconds(secondUptime) - getUptimeStringSeconds(firstUptime) >= 1
+                (secondUptime) - (firstUptime) >= 100
         );
 
-        System.out.println("First uptime : " + firstUptime + ", second uptime after 1s sleep : " + secondUptime);
+
+		//System.out.println("First uptime : " + firstUptime + ", second uptime after 1s sleep : " + secondUptime);
 
     }
+
+    @Test public void testHourCalculation(){
+    	long uptime = (long)(1000*3600*3.5);
+
+    	SystemInfoProvider.getInstance().setUptimeProvider(new TestUptimeProvider(uptime));
+    	SystemInfo info1 = SystemInfoProvider.getInstance().getSystemInfo();
+    	assertEquals(uptime, info1.getUptime());
+    	assertEquals(3.5, info1.getUphours(), 0.01f);
+    	assertEquals(0.14, info1.getUpdays(), 0.01f);
+
+    	//reset uptime provider
+		SystemInfoProvider.getInstance().setUptimeProvider(new DefaultUptimeProvider());
+	}
 
 }
