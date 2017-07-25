@@ -28,7 +28,7 @@ public class SystemInfoTest {
         String machineName = getInfo().getMachineName();
         // "Unknown Computer" means name not found.
         assertNotEquals("Unknown Computer", machineName);
-        //System.out.println("Machine name : " + machineName);
+        System.out.println("Machine name : " + machineName);
 
     }
 
