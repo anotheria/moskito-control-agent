@@ -61,6 +61,16 @@ public class SystemInfoTest {
     	assertEquals(3.5, info1.getUphours(), 0.01f);
     	assertEquals(0.14, info1.getUpdays(), 0.01f);
 
+
+		uptime = (long)(1000*3600*24*3);
+
+		SystemInfoProvider.getInstance().setUptimeProvider(new TestUptimeProvider(uptime));
+		SystemInfo info2 = SystemInfoProvider.getInstance().getSystemInfo();
+		assertEquals(uptime, info2.getUptime());
+		assertEquals(72, info2.getUphours(), 0.01f);
+		assertEquals(3, info2.getUpdays(), 0.01f);
+
+
     	//reset uptime provider
 		SystemInfoProvider.getInstance().setUptimeProvider(new DefaultUptimeProvider());
 	}

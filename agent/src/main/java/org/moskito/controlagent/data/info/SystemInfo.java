@@ -84,11 +84,11 @@ public class SystemInfo implements Serializable{
 
 	public String toString(){
         return "{" +
-                    "javaVersion: "  + javaVersion  + "," +
-                    "startCommand: " + startCommand + "," +
-                    "machineName: "  + machineName  + "," +
-                    "uptime: "       + uptime +
-					"uphours: "  	 + uphours +
+                    "javaVersion: "  + javaVersion  + ", " +
+                    "startCommand: " + startCommand + ", " +
+                    "machineName: "  + machineName  + ", " +
+                    "uptime: "       + uptime + ", " +
+					"uphours: "  	 + uphours + ", " +
 					"updays: "		 + updays +
                "}";
     }
