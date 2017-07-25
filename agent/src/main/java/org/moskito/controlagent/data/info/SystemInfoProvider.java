@@ -125,22 +125,13 @@ public class SystemInfoProvider {
      * @return current machine name
      */
     private String getMachineName(){
-        Map<String, String> env = System.getenv();
-        if (env.containsKey("COMPUTERNAME"))
-            return env.get("COMPUTERNAME");
-        else if(env.containsKey("MACHINENAME"))
-            return env.get("MACHINENAME");
-        else if (env.containsKey("HOSTNAME"))
-            return env.get("HOSTNAME");
-        else {
 
-            try {
-                return InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException | SecurityException e) {
-                return "Unknown Computer";
-            }
-
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException | SecurityException e) {
+            return "Unknown Computer";
         }
+
     }
 
 	public void setUptimeProvider(UptimeProvider uptimeProvider) {
