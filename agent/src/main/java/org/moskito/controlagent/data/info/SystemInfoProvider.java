@@ -5,7 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Map;
 
 /**
  * Singleton, that provides
@@ -48,6 +47,9 @@ public class SystemInfoProvider {
         initialInfo.setStartCommand(
                 getStartCommand()
         );
+        initialInfo.setPid(
+                getPid()
+        );
 
     }
 
@@ -74,6 +76,7 @@ public class SystemInfoProvider {
         info.setJavaVersion(initialInfo.getJavaVersion());
         info.setMachineName(initialInfo.getMachineName());
         info.setStartCommand(initialInfo.getStartCommand());
+        info.setPid(initialInfo.getPid());
         info.setUptime(uptimeProvider.getUptime());
 
         return info;
@@ -134,7 +137,14 @@ public class SystemInfoProvider {
 
     }
 
+    private long getPid(){
+        String processName =
+                java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
+        return Long.parseLong(processName.split("@")[0]);
+    }
+
 	public void setUptimeProvider(UptimeProvider uptimeProvider) {
 		this.uptimeProvider = uptimeProvider;
 	}
+
 }

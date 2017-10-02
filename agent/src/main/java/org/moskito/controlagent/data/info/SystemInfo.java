@@ -26,6 +26,8 @@ public class SystemInfo implements Serializable{
      */
     private long uptime;
 
+    private long pid;
+
     private float uphours;
 
     private float updays;
@@ -93,4 +95,11 @@ public class SystemInfo implements Serializable{
                "}";
     }
 
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
 }
