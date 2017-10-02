@@ -25,7 +25,9 @@ public class SystemInfo implements Serializable{
      * Monitored app uptime
      */
     private long uptime;
-
+    /**
+     * PID of current java process
+     */
     private long pid;
 
     private float uphours;
@@ -91,7 +93,8 @@ public class SystemInfo implements Serializable{
                     "machineName: "  + machineName  + ", " +
                     "uptime: "       + uptime + ", " +
 					"uphours: "  	 + uphours + ", " +
-					"updays: "		 + updays +
+					"updays: "		 + updays + ", " +
+                    "PID: "          + pid +
                "}";
     }
 

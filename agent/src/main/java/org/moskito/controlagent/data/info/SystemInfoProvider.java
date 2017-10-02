@@ -137,6 +137,10 @@ public class SystemInfoProvider {
 
     }
 
+    /**
+     * Retrieves pid from MX beans
+     * @return current process pid
+     */
     private long getPid(){
         String processName =
                 java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
