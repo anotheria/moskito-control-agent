@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,11 @@ public class HttpEndpoint implements Filter {
         /**
          * Requests the data for thresholds of this component.
          */
-        THRESHOLDS
+        THRESHOLDS,
+		/**
+		 * Prints a help message
+		 */
+		HELP
 	};
 
 	public static final String MAPPED_NAME = "moskito-control-agent";
@@ -94,8 +99,11 @@ public class HttpEndpoint implements Filter {
 			case INFO:
 				info(servletRequest, servletResponse, tokens);
 				break;
+			case HELP:
+				help(servletRequest, servletResponse, tokens);
+				break;
 			default:
-				throw new AssertionError("Unrecognized command "+command);
+				throw new AssertionError("Unrecognized command "+command+", try HELP");
 		}
 	}
 
@@ -129,6 +137,12 @@ public class HttpEndpoint implements Filter {
 	private void info(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException {
 		SystemInfo info = SystemInfoProvider.getInstance().getSystemInfo();
 		writeReply(servletResponse, info);
+	}
+
+	private void help(ServletRequest servletRequest, ServletResponse servletResponse, String parameters[]) throws IOException {
+		StringBuilder reply = new StringBuilder("Available commands: ").append(Arrays.toString(COMMAND.values())).append(", ");
+		reply.append("my version is at least 1.2.2");
+		writeReply(servletResponse, reply);
 	}
 
 	void writeReply(ServletResponse servletResponse, Object parameter) throws IOException{
